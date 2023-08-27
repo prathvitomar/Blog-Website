@@ -1,23 +1,29 @@
 const express = require('express');
 const app = express();
 
+app.set('view engine','ejs');
+
 app.listen(3000);
 
 app.get('/', (req, res)=>{
-    res.sendFile('./views/index.html', { root : __dirname })
+    const blogs = [
+        { title: 'Jujutsu Kaisen', snippet : 'New Gen Shounen Gem'},
+        { title: 'Sakamoto Days', snippet : 'Most Entertaining Manga right now'}
+    ]
+    res.render('index', { title : 'Home', blogs});
 })
 
 app.get('/about', (req,res)=>{
-    res.sendFile('./views/about.html', { root : __dirname })
+    res.render('about', { title : 'About'});
 })
 
 //Redirect to About 
-app.get('/about-us',(req, res)=>{
-    res.redirect('/about');
+app.get('/blogs/create',(req, res)=>{
+    res.render('create', { title : 'Create'});
 })
 
 //Use function should be written at the last always.
 app.use((req, res)=>{
-    res.status(404).sendFile('./views/404.html', { root: __dirname });
+    res.status(404).render('404', { title : '404'});
 })
 
